@@ -1,5 +1,5 @@
-import { MessageEmbed } from "discord.js";
-import { getDefaultChannel } from "../discord/client.js";
+import { MessageEmbed } from 'discord.js';
+import { getDefaultChannel } from '../discord/helper';
 
 export const sendMessageToChannel = (content) => {
   getDefaultChannel().send(content);
@@ -9,7 +9,7 @@ export const sendEmbeddedMessageToChannel = (
   color,
   title,
   description,
-  thumbnail
+  thumbnail,
 ) => {
   const embed = new MessageEmbed()
     .setColor(color)

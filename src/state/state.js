@@ -1,15 +1,11 @@
-import storage from "node-persist";
-console.log(storage);
+import storage from 'node-persist';
 
 export const init = async () => {
   await storage.init();
-  console.log(storage);
 };
 
 export const put = async (key, value) => {
   await storage.updateItem(key, value);
 };
 
-export const get = async (key) => {
-  return await storage.getItem(key);
-};
+export const get = async (key) => storage.getItem(key);

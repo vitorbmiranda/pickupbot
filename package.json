@@ -5,13 +5,20 @@
   "description": "A bot for running pickups on Discord",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "NODE_ENV=production node --experimental-modules --es-module-specifier-resolution=node src/index.js",
+    "local": "NOVE_ENV=local node --experimental-modules --es-module-specifier-resolution=node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Vitor",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.3.1",
+    "madge": "^3.9.2",
     "node-persist": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0"
   }
 }

@@ -1,22 +1,9 @@
-import * as Utils from "./utils.js";
-import PickupCommands from "./pickup.js";
-import { isMemberAssignedToAnyOfRoles, ROLES } from "../discord/roles.js";
-import { replyWithLackOfPermissions } from "./mensager.js";
+import * as Utils from './utils';
+import PickupCommands from './pickup';
+import { isMemberAssignedToAnyOfRoles } from '../discord/roles';
+import { replyWithLackOfPermissions } from './messenger';
 
-const botCommands = Object.assign({}, PickupCommands);
-
-console.log(botCommands);
-
-export const handleMessage = (msg) => {
-  const { content } = msg;
-  console.log(content);
-
-  if (content.startsWith("!")) {
-    handleBotCommand(msg);
-  } else {
-    handleOtherMessages(msg);
-  }
-};
+const botCommands = { ...PickupCommands };
 
 const handleBotCommand = (msg) => {
   const { content } = msg;
@@ -40,4 +27,11 @@ const handleBotCommand = (msg) => {
   botCommands[cmd].fn(msg);
 };
 
-const handleOtherMessages = (msg) => {};
+export const handleMessage = (msg) => {
+  const { content } = msg;
+  console.log(content);
+
+  if (content.startsWith('!')) {
+    handleBotCommand(msg);
+  }
+};

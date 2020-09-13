@@ -1,13 +1,38 @@
-import * as State from "../state/state.js";
-import { ROLES } from "../discord/roles.js";
+import * as State from '../state/state';
+import { ROLES } from '../discord/roles';
 import {
   sendMessageToChannel,
   sendEmbeddedMessageToChannel,
   replyMessage,
-} from "./mensager.js";
-import { getUserFromClient } from "../discord/client.js";
+} from './messenger';
+import { getUserFromClient } from '../discord/helper';
 
-const STATE_PICKUP_PLAYERS = "pickup.players";
+const STATE_PICKUP_PLAYERS = 'pickup.players';
+
+const getPickupPlayers = async () => (await State.get(STATE_PICKUP_PLAYERS)) || [];
+
+const sendCurrentPickupStatusMessage = async () => {
+  const pickupPlayers = await getPickupPlayers();
+
+  if (pickupPlayers.length === 0) {
+    sendMessageToChannel('Pickup is empty');
+    return;
+  }
+
+  let finalMsg = '';
+
+  pickupPlayers.forEach((userId) => {
+    const user = getUserFromClient(userId);
+    finalMsg += `\n${user.toString()}`;
+  });
+
+  sendEmbeddedMessageToChannel(
+    '#2ecc71',
+    'bla',
+    finalMsg,
+    'https://imgur.com/byEIU8T.png',
+  );
+};
 
 const add = async (msg) => {
   const pickupPlayers = await getPickupPlayers();
@@ -23,7 +48,7 @@ const add = async (msg) => {
 const remove = async (msg) => {
   let pickupPlayers = await getPickupPlayers();
   pickupPlayers = pickupPlayers.filter(
-    (player) => player != String(msg.author.id)
+    (player) => player !== String(msg.author.id),
   );
   await State.put(STATE_PICKUP_PLAYERS, pickupPlayers);
   sendCurrentPickupStatusMessage();
@@ -31,32 +56,6 @@ const remove = async (msg) => {
 
 const pickup = () => {
   sendCurrentPickupStatusMessage();
-};
-
-const getPickupPlayers = async () =>
-  (await State.get(STATE_PICKUP_PLAYERS)) || [];
-
-const sendCurrentPickupStatusMessage = async () => {
-  const pickupPlayers = await getPickupPlayers();
-
-  if (pickupPlayers.length == 0) {
-    sendMessageToChannel("Pickup is empty");
-    return;
-  }
-
-  let finalMsg = "";
-
-  pickupPlayers.forEach((userId) => {
-    const user = getUserFromClient(userId);
-    finalMsg += "\n" + user.toString();
-  });
-
-  sendEmbeddedMessageToChannel(
-    "#2ecc71",
-    "bla",
-    finalMsg,
-    "https://imgur.com/byEIU8T.png"
-  );
 };
 
 export default {
